@@ -1,7 +1,7 @@
 # HomeWork for 이보미(libbom14@gmail.com)
 
 
-## HomeWork: Ateam-Chat Application
+## 과제: Ateam-Chat Application
 
 - "채팅 서비스를 설계하고 구현하시오"
 
