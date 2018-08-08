@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^$', schema_view),
     url(r'^admin/', admin.site.urls),
     url(r'^rest-api/', include('rest_framework.urls')),
+
+    url(r'^chat/', include('chat.urls')),
 ]
