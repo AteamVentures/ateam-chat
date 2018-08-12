@@ -26,8 +26,6 @@ SECRET_KEY = '%c19)wx^8jw1&z)=p6pz*5yi-gd^=#4*uz_f*r@dt@dq79(@_='
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
-    'chat',
+    'api.chat',
+    'api.users',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

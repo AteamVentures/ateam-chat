@@ -20,9 +20,12 @@ from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='Ateam Chat API')
 
 urlpatterns = [
-    url(r'^$', schema_view),
+    url(r'', schema_view),
+
+    url(r'', include('api.chat.urls')),
+    url(r'', include('api.users.urls')),
+
     url(r'^admin/', admin.site.urls),
     url(r'^rest-api/', include('rest_framework.urls')),
 
-    url(r'^chat/', include('chat.urls')),
 ]
