@@ -26,10 +26,10 @@ class UserSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'username', 'password', 'name', 'phone', 'email', 'date_joined'
+            'id', 'username', 'password', 'name', 'phone', 'email', 'date_joined', 'display_name',
         )
         retrieve_fields = (
-            'username', 'name', 'phone', 'email',
+            'username', 'name', 'phone', 'email', 'display_name'
         )
         read_only_fields = ('date_joined',)
 
@@ -42,4 +42,4 @@ class UserSimpleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'type', 'name')
+        fields = ('id', 'display_name')
