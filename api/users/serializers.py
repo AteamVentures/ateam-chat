@@ -31,7 +31,7 @@ class UserSerializer(DynamicFieldsModelSerializer):
         retrieve_fields = (
             'username', 'name', 'phone', 'email',
         )
-        read_only_fields = ('date_joined')
+        read_only_fields = ('date_joined',)
 
     def create(self, validated_data):
         instance = User.objects.create_user(**validated_data)
