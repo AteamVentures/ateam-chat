@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
 from rest_framework.renderers import CoreJSONRenderer
 from rest_framework.schemas import get_schema_view
 from rest_framework_swagger import renderers
+
+from api.chat.views import ChatViewSet
 
 
 class JSONOpenAPIRenderer(renderers.OpenAPIRenderer):
@@ -28,11 +31,12 @@ schema_view = get_schema_view(title='Ateam Chat API', renderer_classes=[CoreJSON
                                                                         JSONOpenAPIRenderer,
                                                                         renderers.OpenAPIRenderer,
                                                                         renderers.SwaggerUIRenderer])
+router = routers.DefaultRouter()
+router.register(r'chat', ChatViewSet)
 
 urlpatterns = [
     url(r'', schema_view),
 
-    url(r'', include('api.chat.urls')),
     url(r'', include('api.users.urls')),
 
     url(r'^admin/', admin.site.urls),

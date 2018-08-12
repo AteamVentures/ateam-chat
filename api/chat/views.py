@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import filters, permissions, status
+from rest_framework import filters, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from api.serializers import DynamicFieldsModelSerializer
 from api.chat.models import Message
@@ -12,7 +13,11 @@ from api.chat.serializers import MessageSerializer
 
 
 @csrf_exempt
-class ChatViewSet(DynamicFieldsModelSerializer):
+class ChatViewSet(mixins.CreateModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  GenericViewSet):
     """
     /chat
     """
@@ -29,3 +34,19 @@ class ChatViewSet(DynamicFieldsModelSerializer):
         message = self.get_object()
         message.read()
         return Response(status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
