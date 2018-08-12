@@ -2,6 +2,7 @@
 from django.db import models
 
 from api.users.models import User
+from django.utils import timezone
 
 
 class Message(models.Model):
@@ -16,3 +17,9 @@ class Message(models.Model):
 
     def __str__(self):
         return self.message
+
+    def read(self):
+        if not self.is_read:
+            self.is_read = True
+            self.date_read = timezone.now()
+            self.save()

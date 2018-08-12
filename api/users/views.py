@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from rest_framework import mixins, filters, permissions
-from rest_framework.viewsets import GenericViewSet
+from rest_framework import filters, permissions
+from rest_framework.viewsets import ModelViewSet
 
 from api.users.models import User
 from api.users.signals import user_registered
 from .serializers import UserSerializer
 
 
-class UsersViewSet(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin, GenericViewSet):
+class UsersViewSet(ModelViewSet):
     """
     /users
     """

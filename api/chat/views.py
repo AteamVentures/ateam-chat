@@ -1,51 +1,31 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# from django.contrib.auth.models import User
-from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+from rest_framework import filters, permissions, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from api.serializers import DynamicFieldsModelSerializer
 from api.chat.models import Message
 from api.chat.serializers import MessageSerializer
-from api.users.models import User
-
-
-# # Users View
-# @csrf_exempt
-# def user_list(request, pk=None):
-#     """
-#     List all required messages, or create a new message.
-#     """
-#     if request.method == 'GET':
-#         if pk:
-#             users = User.objects.filter(id=pk)
-#         else:
-#             users = User.objects.all()
-#         serializer = UserSerializer(users, many=True, context={'request': request})
-#         return JsonResponse(serializer.data, safe=False)
-#     elif request.method == 'POST':
-#         data = JSONParser().parse(request)
-#         serializer = UserSerializer(data=data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return JsonResponse(serializer.data, status=201)
-#         return JsonResponse(serializer.errors, status=400)
 
 
 @csrf_exempt
-def message_list(request, sender=None, receiver=None):
+class ChatViewSet(DynamicFieldsModelSerializer):
     """
-    List all required messages, or create a new message.
+    /chat
     """
-    if request.method == 'GET':
-        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver)
-        serializer = MessageSerializer(messages, many=True, context={'request': request})
-        return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = MessageSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    filter_backends = (filters.SearchFilter,)
 
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+    @action(detail=True)
+    def read(self, request, pk):
+        message = self.get_object()
+        message.read()
+        return Response(status=status.HTTP_200_OK)
