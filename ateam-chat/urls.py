@@ -15,9 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from rest_framework_swagger.views import get_swagger_view
+from rest_framework.renderers import CoreJSONRenderer
+from rest_framework.schemas import get_schema_view
+from rest_framework_swagger import renderers
 
-schema_view = get_swagger_view(title='Ateam Chat API')
+
+class JSONOpenAPIRenderer(renderers.OpenAPIRenderer):
+    media_type = 'application/json'
+
+
+schema_view = get_schema_view(title='Ateam Chat API', renderer_classes=[CoreJSONRenderer,
+                                                                        JSONOpenAPIRenderer,
+                                                                        renderers.OpenAPIRenderer,
+                                                                        renderers.SwaggerUIRenderer])
 
 urlpatterns = [
     url(r'', schema_view),
