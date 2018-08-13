@@ -10,7 +10,7 @@ user_list = UsersViewSet.as_view({
 })
 
 user_detail = UsersViewSet.as_view({
-    'head': 'retrieve',
+    'get': 'retrieve',
 })
 
 urlpatterns = [

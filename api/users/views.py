@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from rest_framework import filters, permissions
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 
 from api.users.models import User
 from api.users.signals import user_registered
@@ -32,3 +33,8 @@ class UsersViewSet(ModelViewSet):
         if self.action == 'create':
             self.permission_classes = (permissions.AllowAny,)
         return super(UsersViewSet, self).get_permissions()
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
