@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import filters, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,7 +11,6 @@ from api.chat.models import Message
 from api.chat.serializers import MessageSerializer
 
 
-@csrf_exempt
 class ChatViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
@@ -29,16 +27,16 @@ class ChatViewSet(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
 
-    @action(detail=True)
-    def read(self, request, pk):
+    # @action(detail=True)
+    def read(self, request):
         message = self.get_object()
         message.read()
         return Response(status=status.HTTP_200_OK)
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
