@@ -21,6 +21,7 @@ from rest_framework.schemas import get_schema_view
 from rest_framework_swagger import renderers
 
 from api.chat.views import ChatViewSet
+from api.users.views import UsersViewSet
 
 
 class JSONOpenAPIRenderer(renderers.OpenAPIRenderer):
@@ -32,12 +33,14 @@ schema_view = get_schema_view(title='Ateam Chat API', renderer_classes=[CoreJSON
                                                                         renderers.OpenAPIRenderer,
                                                                         renderers.SwaggerUIRenderer])
 router = routers.DefaultRouter()
-router.register(r'chat', ChatViewSet)
+# router.register(r'chat', ChatViewSet)
+# router.register(r'account', UsersViewSet)
 
 urlpatterns = [
     url(r'', schema_view),
 
-    url(r'', include('api.users.urls')),
+    url(r'^accounts/', include('api.users.urls', namespace='account')),
+    url(r'^chat/', include('api.chat.urls', namespace='chat')),
 
     url(r'^admin/', admin.site.urls),
     url(r'^rest-api/', include('rest_framework.urls')),
