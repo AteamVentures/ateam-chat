@@ -20,9 +20,6 @@ from rest_framework.renderers import CoreJSONRenderer
 from rest_framework.schemas import get_schema_view
 from rest_framework_swagger import renderers
 
-from api.chat.views import ChatViewSet
-from api.users.views import UsersViewSet
-
 
 class JSONOpenAPIRenderer(renderers.OpenAPIRenderer):
     media_type = 'application/json'
