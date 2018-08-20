@@ -30,16 +30,13 @@ schema_view = get_schema_view(title='Ateam Chat API', renderer_classes=[CoreJSON
                                                                         renderers.OpenAPIRenderer,
                                                                         renderers.SwaggerUIRenderer])
 router = routers.DefaultRouter()
-# router.register(r'chat', ChatViewSet)
-# router.register(r'account', UsersViewSet)
 
 urlpatterns = [
-    url(r'', schema_view),
+    # url(r'', schema_view),
 
-    url(r'^accounts/', include('api.users.urls', namespace='account')),
-    url(r'^chat/', include('api.chat.urls', namespace='chat')),
+    url(r'^chat/', include('chat.urls')),
 
     url(r'^admin/', admin.site.urls),
-    url(r'^rest-api/', include('rest_framework.urls')),
+    # url(r'^rest-api/', include('rest_framework.urls')),
 
 ]

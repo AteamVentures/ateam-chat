@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
-    'api.chat',
-    'api.users',
+    'channels',
+
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +89,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ateam-chat.wsgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        'ROUTING': 'chat.routing.channel_routing',
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -118,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
