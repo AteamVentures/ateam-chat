@@ -6,7 +6,10 @@ from haikunator import Haikunator
 from .models import Room
 
 def about(request):
-    return render(request, "about.html")
+    chat_list = Room.objects.all()
+    return render(request, "about.html", {
+        'chat_list': chat_list
+    })
 
 def new_room(request):
     """
