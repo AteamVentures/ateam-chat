@@ -35,6 +35,7 @@ urlpatterns = [
     # url(r'', schema_view),
 
     url(r'^chat/', include('chat.urls')),
+    url(r'^accounts/', include('users.urls')),
 
     url(r'^admin/', admin.site.urls),
     # url(r'^rest-api/', include('rest_framework.urls')),

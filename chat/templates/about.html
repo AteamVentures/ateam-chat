@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static from staticfiles %}
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>메인</title>
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet">
 </head>
 <body>
-    <div>
+<div class="content-area">
         <p>
             <a class="button button-primary" href="{% url 'new_room' %}">Join</a>
         </p>

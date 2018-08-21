@@ -131,7 +131,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
