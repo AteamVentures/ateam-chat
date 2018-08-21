@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
 
-    'api.chat',
-    'api.users',
+    'channels',
+
+    'chat',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +90,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ateam-chat.wsgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        'ROUTING': 'chat.routing.channel_routing',
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -99,6 +111,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -118,7 +131,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -138,3 +153,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

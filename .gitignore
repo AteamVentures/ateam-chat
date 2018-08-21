@@ -92,10 +92,6 @@ target/
 # Mongo Explorer plugin:
 # .idea/mongoSettings.xml
 
-## File-based project format:
-*.ipr
-*.iws
-
 ## Plugin-specific files:
 
 # IntelliJ
@@ -104,30 +100,14 @@ out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-
 ## SQLite
 db.sqlite3
-
-### Yeoman template
-node_modules/
-bower_components/
-*.log
 
 build/
 dist/
 
 ## Collected static files
 static/*
-kidsnote/static/cache/*
-!kidsnote/static/cache/manifest.json
-!kidsnote/static/cache/manifest-dev.json
 
 ### Sass template
 .sass-cache
@@ -136,14 +116,6 @@ kidsnote/static/cache/*
 ## User generated Media folder
 media/
 
-## Vagrant
-.vagrant
-
 ## autoenv
 .env
 
-kidsnote/conf/settings/local.py
-fabfile.py
-celerybeat-schedule
-_reset_db.sh
-dump_for_10_1.sql

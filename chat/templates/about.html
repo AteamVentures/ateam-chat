@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static from staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <link href="{% static 'css/chat.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="content-area">
+    {% if not user.is_authenticated %}
+        <p>
+            <a class="button button-primary" href="{% url 'new_room' %}">Join</a>
+        </p>
+        <p>
+            <a class="button button-primary" href="{% url 'new_room' %}">Login</a>
+        </p>
+    {% else %}
+        <p>
+            <a class="button button-primary" href="{% url 'new_room' %}">Create new chat room</a>
+        </p>
+        <h2>Chat List</h2>
+        {% for chat in chat_list %}
+            <p><a href="{% url 'chat_room' label=chat.label %}">{{ chat.label }}</a></p>
+        {% empty %}
+        {% endfor %}
+    {% endif %}
+</div>
+</body>
+</html>

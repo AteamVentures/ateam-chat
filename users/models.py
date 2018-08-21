@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth import models as auth_models
-from django.contrib.auth.models import UserManager as AuthUserManager
+from django.contrib.auth.models import UserManager as AuthUserManager, User
 from django.core import validators
 from django.db import models
 from django.utils import timezone
