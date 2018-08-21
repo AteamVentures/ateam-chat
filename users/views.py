@@ -61,10 +61,6 @@ class LoginView(generic.FormView):
         log.info(self.request, menu='user', action='login')
         return redirect(self.get_success_url())
 
-    def get_context_data(self, **kwargs):
-        context = super(LoginView, self).get_context_data(**kwargs)
-        return context
-
     @method_decorator(sensitive_post_parameters('password'))
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
@@ -94,10 +90,9 @@ class SignupView(generic.FormView):
 
 
 class LogoutView(generic.RedirectView):
-    success_url = reverse_lazy('login')
     permanent = False
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
-        return super(LogoutView, self).get(request, *args, **kwargs)
+        return HttpResponseRedirect(reverse_lazy('login'))
 
