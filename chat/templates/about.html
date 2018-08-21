@@ -7,19 +7,24 @@
 <body>
     <div>
         <p>
-            <a class="button button-primary" href="{% url 'new_room' %}">Create new chat room</a>
+            <a class="button button-primary" href="{% url 'new_room' %}">Join</a>
         </p>
-        <p class="quiet">
-            You can visit <code>{{ request.scheme }}://{{ request.get_host }}/chat/any-path-you-want</code>
-            to create a arbitrary room or join one whose name you know.
+        <p>
+            <a class="button button-primary" href="{% url 'new_room' %}">Login</a>
         </p>
+
     </div>
     <div>
-        <h2>Chat List</h2>
-        {% for chat in chat_list %}
-            <p><a href="{% url 'chat_room' label=chat.label %}">{{ chat.label }}</a></p>
-        {% empty %}
-        {% endfor %}
+        {% if user.is_authenticated %}
+            <p>
+                <a class="button button-primary" href="{% url 'new_room' %}">Create new chat room</a>
+            </p>
+            <h2>Chat List</h2>
+            {% for chat in chat_list %}
+                <p><a href="{% url 'chat_room' label=chat.label %}">{{ chat.label }}</a></p>
+            {% empty %}
+            {% endfor %}
+        {% endif %}
     </div>
 </body>
 </html>

@@ -11,7 +11,7 @@ from channels.auth import http_session_user, channel_session_user, channel_sessi
 
 log = logging.getLogger(__name__)
 
-@channel_session
+@channel_session_user_from_http
 def ws_connect(message):
     # Extract the room from the message. This expects message.path to be of the
     # form /chat/{label}/, and finds a Room if the message path is applicable,
@@ -60,7 +60,7 @@ def ws_receive(message):
     try:
         data = json.loads(message['text'])
     except ValueError:
-        log.debug("ws message isn't json text=%s", text)
+        log.debug("ws message isn't json text=%s", data)
         return
 
     if set(data.keys()) != set(('handle', 'message')):
@@ -75,7 +75,7 @@ def ws_receive(message):
         # See above for the note about Group
         Group('chat-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
 
-@channel_session
+@channel_session_user
 def ws_disconnect(message):
     try:
         label = message.channel_session['room']

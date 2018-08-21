@@ -21,11 +21,6 @@
                 <label for="handle">Your name:</label>
                 <input id="handle" type="text" placeholder="handle" value="{{ user.username }}">
             </p>
-        {% else %}
-            <p>
-                <label for="handle">Your name:</label>
-                <input id="handle" type="text" placeholder="handle">
-            </p>
         {% endif %}
         <form id="chatform">
             {% csrf_token %}
