@@ -1,8 +1,10 @@
-from __future__ import unicode_literals
 
+import json
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+
+from users.models import User
 
 
 class Room(models.Model):
@@ -27,4 +29,6 @@ class Message(models.Model):
         return self.timestamp.strftime('%b %-d %-I:%M %p')
 
     def as_dict(self):
+        if isinstance(self.handle, User):
+            return {'handle': str(self.handle.display_name), 'message': self.message, 'timestamp': self.formatted_timestamp}
         return {'handle': self.handle, 'message': self.message, 'timestamp': self.formatted_timestamp}

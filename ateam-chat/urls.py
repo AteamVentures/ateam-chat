@@ -32,10 +32,9 @@ schema_view = get_schema_view(title='Ateam Chat API', renderer_classes=[CoreJSON
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    # url(r'', schema_view),
 
+    url(r'', include('users.urls')),
     url(r'^chat/', include('chat.urls')),
-    url(r'^accounts/', include('users.urls')),
 
     url(r'^admin/', admin.site.urls),
     # url(r'^rest-api/', include('rest_framework.urls')),

@@ -12,14 +12,12 @@
 
 <body>
 <div class="content-area">
-        <p class="quiet">
-            Anyone with this URL can join the room and chat:
-            <code>{{ request.scheme }}://{{ request.get_host }}/chat/{{ room.label }}</code>
-        </p>
         {% if user.is_authenticated %}
+
+            <p>Room name: {{ room.label }}</p>
             <p>
-                <label for="handle">Your name:</label>
-                <input id="handle" type="text" placeholder="handle" value="{{ user.username }}">
+                <label for="handle">Your name: {{ user.display_name }}</label>
+                <input id="handle" type="hidden" placeholder="handle" value="{{ user }}">
             </p>
         {% endif %}
         <form id="chatform">
@@ -29,7 +27,7 @@
                 {% for message in messages %}
                     <tr>
                         <td>{{ message.formatted_timestamp }}</td>
-                        <td>{{ message.handle }}</td>
+                        <td>{{ message.handle.display_name }}</td>
                         <td>{{ message.message }}</td>
                     </tr>
                 {% endfor %}

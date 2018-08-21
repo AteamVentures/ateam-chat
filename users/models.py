@@ -41,6 +41,9 @@ class User(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
         verbose_name = _('user')
         verbose_name_plural = _('users')
 
+    def __str__(self):
+        return str(self.id)
+
     def save(self, *args, **kwargs):
         is_new = not self.id
         if is_new:

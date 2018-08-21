@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import (login as auth_login, logout as auth_logout,
                                  REDIRECT_FIELD_NAME, authenticate)
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import generic
@@ -16,6 +17,15 @@ from .forms import LoginForm, SignupForm
 
 
 log = logging.getLogger(__name__)
+
+
+class LandingView(generic.TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('about'))
+        else:
+            return HttpResponseRedirect(reverse('login'))
 
 
 class LoginView(generic.FormView):
@@ -48,8 +58,7 @@ class LoginView(generic.FormView):
         msg = '로그인 성공.'
         messages.success(self.request, msg)
 
-        log.info(self.request, menu='user', action='login',
-                 type=self.request.user.type)
+        log.info(self.request, menu='user', action='login')
         return redirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
@@ -82,4 +91,13 @@ class SignupView(generic.FormView):
         user = self.register_user(form)
         user.save()
         return redirect(self.get_success_url())
+
+
+class LogoutView(generic.RedirectView):
+    success_url = reverse_lazy('login')
+    permanent = False
+
+    def get(self, request, *args, **kwargs):
+        auth_logout(request)
+        return super(LogoutView, self).get(request, *args, **kwargs)
 
