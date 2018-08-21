@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import (login as auth_login, logout as auth_logout,
                                  REDIRECT_FIELD_NAME, authenticate)
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import generic
@@ -64,7 +65,7 @@ class LoginView(generic.FormView):
 class SignupView(generic.FormView):
     form_class = SignupForm
     template_name = 'signup.html'
-    redirect_field_name = REDIRECT_FIELD_NAME
+    success_url = reverse_lazy('about')
 
     def register_user(self, form):
         user = form.save()
@@ -80,5 +81,5 @@ class SignupView(generic.FormView):
     def form_valid(self, form):
         user = self.register_user(form)
         user.save()
-        return redirect(form.cleaned_data['redirect_url'])
+        return redirect(self.get_success_url())
 

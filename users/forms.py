@@ -82,15 +82,6 @@ class SignupForm(forms.ModelForm):
                                     attrs={
                                         'class': 'form-control',
                                         'placeholder': '비밀번호 재입력 6~20자리'}))
-
-    redirect_url = forms.CharField(widget=forms.HiddenInput,
-                                   required=False)
-
-    email_domain_choice = forms.ChoiceField(required=False,
-                                            choices=EMAIL_DOMAIN_CHOICES,
-                                            widget=forms.Select(
-                                                attrs={
-                                                    'class': 'form-control'}))
     email_name = forms.CharField(required=True,
                                  max_length=50,
                                  widget=forms.TextInput(
@@ -105,18 +96,24 @@ class SignupForm(forms.ModelForm):
                                            'class': 'form-control',
                                            'placeholder': '직접 입력'}))
 
+    email_domain_choice = forms.ChoiceField(required=False,
+                                            choices=EMAIL_DOMAIN_CHOICES,
+                                            widget=forms.Select(
+                                                attrs={
+                                                    'class': 'form-control'}))
+
     class Meta:
         model = User
-        fields = ('username', 'phone', 'name')
+        fields = ('username', 'phone', 'name', 'display_name')
         widgets = {
-            'username': forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'ID는 5자리 이상'}),
+            'username': forms.TextInput(attrs={'class': 'form-control',
+                                               'placeholder': 'ID는 5자리 이상'}),
             'phone': forms.TextInput(attrs={'class': 'form-control',
                                             'placeholder': '연락처'}),
             'name': forms.TextInput(attrs={'class': 'form-control',
-                                           'placeholder': '이름'})
+                                           'placeholder': '이름'}),
+            'display_name': forms.TextInput(attrs={'class': 'form-control',
+                                                   'placeholder': '닉네임 최대 20자리'})
         }
 
     def clean_username(self):
@@ -140,7 +137,7 @@ class SignupForm(forms.ModelForm):
         password2 = self.cleaned_data.get('password2')
         if password1 != password2:
             raise forms.ValidationError(
-                _("The two password fields didn't match."))
+                '비밀번호가 일치하지 않습니다.')
         return password2
 
     def clean_redirect_url(self):
@@ -157,7 +154,7 @@ class SignupForm(forms.ModelForm):
             validators.validate_email(email)
         except ValidationError:
             raise forms.ValidationError(
-                self.add_error('email_name', _('Enter a valid email address.')))
+                self.add_error('email_name', '이메일 주소를 정확히 입력해주세요.'))
 
     def save(self, commit=True):
         user = super(SignupForm, self).save(commit=False)
