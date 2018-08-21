@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -14,7 +15,7 @@ class Room(models.Model):
 
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name='messages')
-    handle = models.TextField()
+    handle = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='user', db_constraint=False)
     message = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
