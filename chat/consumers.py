@@ -4,7 +4,7 @@ import logging
 from channels import Channel, Group
 from channels.sessions import channel_session
 from .models import Room, Message
-
+from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from channels.handler import AsgiHandler
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
@@ -40,7 +40,7 @@ def ws_connect(message):
 
     message.channel_session['room'] = room.label
 
-@channel_session
+@channel_session_user
 def ws_receive(message):
     # Look up the room from the channel session, bailing if it doesn't exist
     try:
@@ -68,6 +68,7 @@ def ws_receive(message):
         return
 
     if data:
+        data['handle'] = message.user
         log.debug('chat message room=%s handle=%s message=%s',
                   room.label, data['handle'], data['message'])
         m = room.messages.create(**data)
@@ -75,7 +76,7 @@ def ws_receive(message):
         # See above for the note about Group
         Group('chat-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
 
-@channel_session_user
+@channel_session
 def ws_disconnect(message):
     try:
         label = message.channel_session['room']
