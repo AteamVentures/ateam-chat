@@ -106,9 +106,6 @@ db.sqlite3
 build/
 dist/
 
-## Collected static files
-static/*
-
 ### Sass template
 .sass-cache
 *.css.map
