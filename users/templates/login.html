@@ -15,9 +15,25 @@
 <div class="content-area">
     <form method="post" action="">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="로그인"/>
-        <a class="button button-primary" href="{% url 'signup' %}">회원가입</a>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">{{ form.username.label }}</label>
+            <div class="col-md-9">{{ form.username }}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">{{ form.password.label }}</label>
+            <div class="col-md-9">{{ form.password }}</div>
+        </div>
+        {% if form.non_field_errors %}
+            <div class="form-group">
+                <small class="text-error">
+                    {{ form.non_field_errors }}
+                </small>
+            </div>
+        {% endif %}
+        <div class="text-center">
+            <input type="submit" value="로그인"/>
+            <a class="button button-primary" href="{% url 'signup' %}">회원가입</a>
+        </div>
     </form>
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
