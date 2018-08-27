@@ -13,38 +13,50 @@
 
 <body>
 <div class="content-area">
-    <form method="post" action="">
+    <form method="post" action="" id="signUpForm">
         {% csrf_token %}
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.username.label }}</label>
-            <div class="col-md-9">{{ form.username }}</div>
+            <div class="col-md-9">{{ form.username }}
+                <div id="{{ form.username.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.phone.label }}</label>
-            <div class="col-md-9">{{ form.phone }}</div>
+            <div class="col-md-9">{{ form.phone }}
+                <div id="{{ form.phone.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.name.label }}</label>
-            <div class="col-md-9">{{ form.name }}</div>
+            <div class="col-md-9">{{ form.name }}
+                <div id="{{ form.name.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.display_name.label }}</label>
-            <div class="col-md-9">{{ form.display_name }}</div>
+            <div class="col-md-9">{{ form.display_name }}
+                <div id="{{ form.display_name.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.password1.label }}</label>
-            <div class="col-md-9">{{ form.password1 }}</div>
+            <div class="col-md-9">{{ form.password1 }}
+                <div id="{{ form.password1.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.password2.label }}</label>
-            <div class="col-md-9">{{ form.password2 }}</div>
+            <div class="col-md-9">{{ form.password2 }}
+                <div id="{{ form.password2.id_for_label }}-error" class="form-xlarge text-red"></div>
+            </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.email_name.label }}</label>
             <div class="col-md-3">{{ form.email_name }}</div>
             <div class="col-md-3">{{ form.email_domain }}</div>
             <div class="col-md-3">{{ form.email_domain_choice }}</div>
-            <div class="col-md-9 col-md-offset-3">
+            <div class="col-md-9 offset-3">
                 {% for error in form.email_name.errors %}
                     <p class="text-error">{{ error }}</p>
                 {% endfor %}
@@ -61,6 +73,7 @@
 <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery.validate.js' %}"></script>
 <script>
     $(function () {
         bindEvent();
@@ -78,6 +91,124 @@
         });
     }
     function initSignup() {
+        $.validator.addMethod(
+            "regex",
+            function (value, element, regexp) {
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            }
+        );
+
+        $("#signUpForm").validate({
+            rules: {
+                phone: {
+                    required: true
+                },
+
+                name: {
+                    required: true,
+                    maxlength: 50
+                },
+
+                username: {
+                    required: true,
+                    rangelength: [5, 32],
+                    regex: /^[a-zA-Z0-9_]+$/,
+                    remote: {
+                        url: "{% url 'username_check' %}",
+                        type: "post",
+                        data: {
+                            username: function () {
+                                return $("#id_username").val();
+                            }
+                        }
+                    }
+                },
+                display_name: {
+                    required: true
+                },
+                password1: {
+                    required: true,
+                    rangelength: [6, 20]
+                },
+
+                password2: {
+                    required: true,
+                    equalTo: '#id_password1'
+                },
+
+                email_name: {
+                    required: true,
+                    maxlength: 50
+                },
+                email_domain: {
+                    required: true,
+                    maxlength: 50
+                }
+            },
+            messages: {
+                phone: {
+                    required: '연락처는 필수 입력항목입니다.'
+                },
+
+                name: {
+                    required: '이름은 필수 입력항목입니다.'
+                },
+
+                email_name: {
+                    required: '이메일은 필수 입력항목입니다.',
+                    maxlength: '최대 입력 길이를 초과하였습니다.'
+
+                },
+                email_domain: {
+                    required: '이메일은 필수 입력항목입니다.',
+                    maxlength: '최대 입력 길이를 초과하였습니다.'
+                },
+
+                username: {
+                    rangelength: '5~32자 영문소문자, 숫자와 밑줄(_)만 입력가능합니다.',
+                    regex: '5~32자 영문소문자, 숫자와 밑줄(_)만 입력가능합니다.',
+                    required: 'ID는 필수 입력항목입니다.',
+                    remote: '중복된 ID 입니다.'
+                },
+
+                display_name: {
+                    required: '닉네임은 필수 입력항목입니다.'
+                },
+
+                password1: {
+                    required: '비밀번호는 필수 입력항목입니다.',
+                    rangelength: '비밀번호는 6~20자리로 사용 가능합니다.'
+                },
+
+                password2: {
+                    required: '비밀번호 재입력은 필수 입력항목입니다.',
+                    equalTo: '비밀번호가 일치하지 않습니다.'
+                }
+            },
+
+            highlight: function (element) {
+                $(element).parent().removeClass('has-success').addClass('has-error');
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass('has-error').addClass('has-success');
+            },
+            errorElement: 'p',
+            errorClass: 'text-error',
+            errorPlacement: function (error, element) {
+                if (element.length) {
+                    if (element.attr('name') == "email_name" || element.attr('name') == "email_domain") {
+                        $('#id_email-error').html(error);
+                    }
+                    else {
+                        $('#' + element.attr('id') + '-error').html(error);
+                    }
+
+                } else {
+                    error.insertAfter(element.parent());
+                }
+            }
+        });
 
     }
 </script>

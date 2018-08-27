@@ -21,3 +21,7 @@ p.deck a {
     font-size: 90%;
     color: #999;
 }
+
+.text-red {
+    color: red;
+}

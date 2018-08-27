@@ -1,18 +1,20 @@
 
 import logging
+import json
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import (login as auth_login, logout as auth_logout,
-                                 REDIRECT_FIELD_NAME, authenticate)
+from django.contrib.auth import (login as auth_login, logout as auth_logout, authenticate)
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 
+from .models import User
 from .forms import LoginForm, SignupForm
 
 
@@ -96,3 +98,20 @@ class LogoutView(generic.RedirectView):
         auth_logout(request)
         return HttpResponseRedirect(reverse_lazy('login'))
 
+
+@ensure_csrf_cookie
+@csrf_protect
+def username_dup_check(request):
+    """
+    ID 중복 체크
+    """
+    is_available = False
+    if request.is_ajax():
+        username = request.POST.get('username')
+        try:
+            User.objects.get_by_natural_key(username)
+        except User.DoesNotExist:
+            is_available = 'true'
+        return HttpResponse(json.dumps(is_available),
+                            content_type='application/json', status=200)
+    return HttpResponse(content_type='application/json', status=400)

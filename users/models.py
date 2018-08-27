@@ -23,7 +23,7 @@ class User(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
                 '영문소문자, 숫자와 밑줄(_)만 입력가능합니다.',
                 'invalid')])
     name = models.CharField(verbose_name='이름', max_length=50)
-    display_name = models.CharField(verbose_name='닉네임', max_length=20, blank=True)
+    display_name = models.CharField(verbose_name='닉네임', max_length=20, blank=False)
     email = models.EmailField(verbose_name='이메일', max_length=190, db_index=True)
     phone = models.CharField('연락처', max_length=30, db_index=True,
                              validators=[validators.RegexValidator(
