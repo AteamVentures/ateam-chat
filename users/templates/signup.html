@@ -54,7 +54,14 @@
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.email_name.label }}</label>
             <div class="col-md-3">{{ form.email_name }}</div>
-            <div class="col-md-3">{{ form.email_domain }}</div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="emailAddOn">@</span>
+                    </div>
+                    {{ form.email_domain }}
+                </div>
+            </div>
             <div class="col-md-3">{{ form.email_domain_choice }}</div>
             <div class="col-md-9 offset-3">
                 {% for error in form.email_name.errors %}
