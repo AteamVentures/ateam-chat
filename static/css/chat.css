@@ -25,3 +25,7 @@ p.deck a {
 .text-red {
     color: red;
 }
+
+select.form-control {
+    height: 100%;
+}
