@@ -26,7 +26,7 @@ class Message(models.Model):
 
     @property
     def formatted_timestamp(self):
-        return self.timestamp.strftime('%b %-d %-I:%M %p')
+        return self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
     def as_dict(self):
         if isinstance(self.handle, User):
