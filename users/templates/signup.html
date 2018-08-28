@@ -18,37 +18,37 @@
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.username.label }}</label>
             <div class="col-md-9">{{ form.username }}
-                <div id="{{ form.username.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.username.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.phone.label }}</label>
             <div class="col-md-9">{{ form.phone }}
-                <div id="{{ form.phone.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.phone.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.name.label }}</label>
             <div class="col-md-9">{{ form.name }}
-                <div id="{{ form.name.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.name.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.display_name.label }}</label>
             <div class="col-md-9">{{ form.display_name }}
-                <div id="{{ form.display_name.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.display_name.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.password1.label }}</label>
             <div class="col-md-9">{{ form.password1 }}
-                <div id="{{ form.password1.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.password1.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-form-label">{{ form.password2.label }}</label>
             <div class="col-md-9">{{ form.password2 }}
-                <div id="{{ form.password2.id_for_label }}-error" class="form-xlarge text-red"></div>
+                <div id="{{ form.password2.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="form-group row">
@@ -62,8 +62,8 @@
                 {% endfor %}
 
                 <div id="id_email-error" class="text-red"></div>
-                <div id="{{ form.email_name.id_for_label }}-error" class="form-small"></div>
-                <div id="{{ form.email_domain.id_for_label }}-error" class="form-small"></div>
+                <div id="{{ form.email_name.id_for_label }}-error" class="text-red"></div>
+                <div id="{{ form.email_domain.id_for_label }}-error" class="text-red"></div>
             </div>
         </div>
         <div class="text-center"><input type="submit" value="회원가입" class="button button-primary"/></div>
