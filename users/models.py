@@ -14,23 +14,23 @@ class User(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     username = models.CharField(
         verbose_name=_('username'), unique=True,
         max_length=32,
-        help_text=_('Required. Letters, digit and _ only'),
+        help_text='필수입니다. 영문소문자, 숫자와 밑줄(_)만 입력가능합니다.',
         validators=[
             validators.MinLengthValidator(3),
             validators.MaxLengthValidator(32),
             validators.RegexValidator(
                 r'^(?!_)[a-zA-Z0-9_]+$',
-                _("Enter alphabet, digits and _ only"),
+                '영문소문자, 숫자와 밑줄(_)만 입력가능합니다.',
                 'invalid')])
-    name = models.CharField(verbose_name=_("name"), max_length=50)
-    display_name = models.CharField(verbose_name=_('display name'), max_length=20, blank=True)
-    email = models.EmailField(verbose_name=_('email'), max_length=190, db_index=True)
-    phone = models.CharField(_('user phone number'), max_length=30, db_index=True,
+    name = models.CharField(verbose_name='이름', max_length=50)
+    display_name = models.CharField(verbose_name='닉네임', max_length=20, blank=False)
+    email = models.EmailField(verbose_name='이메일', max_length=190, db_index=True)
+    phone = models.CharField('연락처', max_length=30, db_index=True,
                              validators=[validators.RegexValidator(
                                  r'^[0-9]+$',
-                                 _('Only numbers available'),
+                                 '숫자만 입력 가능합니다.',
                                  'invalid')])
-    date_joined = models.DateTimeField(verbose_name=_('joined date'), default=timezone.now)
+    date_joined = models.DateTimeField(verbose_name='가입일', default=timezone.now)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 EMAIL_DOMAIN_CHOICES = (
-    ('', '이메일 선택'),
+    ('', '직접 입력'),
     ('hanmail.net', 'hanmail.net'),
     ('daum.net', 'daum.net'),
     ('naver.com', 'naver.com'),
@@ -51,6 +51,10 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         self.user_cache = authenticate(username=username, password=password)
+        if self.user_cache is None:
+            raise forms.ValidationError('아이디 또는 비밀번호를 잘못 입력하셨습니다.',
+                                        code='invalid_login'
+                                        )
         return self.cleaned_data
 
     def get_user_id(self):
@@ -82,7 +86,8 @@ class SignupForm(forms.ModelForm):
                                     attrs={
                                         'class': 'form-control',
                                         'placeholder': '비밀번호 재입력 6~20자리'}))
-    email_name = forms.CharField(required=True,
+    email_name = forms.CharField(label='이메일',
+                                 required=True,
                                  max_length=50,
                                  widget=forms.TextInput(
                                      attrs={
